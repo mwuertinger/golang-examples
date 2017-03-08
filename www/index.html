@@ -33,6 +33,8 @@
           $http.post('/entry', JSON.stringify(entry))
             .then(function(response) {
               loadData();
+              $scope.form.author = "";
+              $scope.form.message = "";
             },
             function(failure) {
               console.log(failure);
