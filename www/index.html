@@ -5,31 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.js"></script>
 
     <script>
       var app = angular.module('GuestBook', []);
       app.controller('GuestBook', ['$scope', "$http", function($scope, $http) {
-        $http.get('/entry').then(function(response) {
+
+        loadData = function() {
+          $http.get('/entry').then(function(response) {
             $scope.entries = response.data
             console.log(JSON.stringify($scope.entries));
           });
+        }
+
+        $scope.submit = function() {
+          entry = {
+            Author: $scope.form.author,
+            Message: $scope.form.message
+          }
+
+          console.log(JSON.stringify(entry));
+
+          $http.post('/entry',
+            JSON.stringify(entry),
+            function(response) {
+              loadData();
+            },
+            function(failure) {
+              console.log(failure);
+            }
+          )
+        }
+
+        loadData();
       }]);
     </script>
     <style>
       .entry {
+        display: block;
+        margin-bottom: 50px;
       }
-      .author {
-        color: red;
+      .message {
+        font-size: 18px;
       }
     </style>
   </head>
   <body ng-controller="GuestBook">
-    <div>
-      <div ng-repeat="entry in entries">
-        <div class="author">{{ entry.Author }}</div>
-        <div>{{ entry.Message }}</div>
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+
+          <h1>Guest Book</h1>
+
+          <div ng-repeat="entry in entries" class="entry">
+            <h2>{{ entry.Author }}</h2>
+            <div class="message">{{ entry.Message }}</div>
+          </div>
+
+          <div class="jumbotron">
+            <form ng-submit="submit()">
+              <div class="form-group">
+                <label for="fieldAuthor">Name</label>
+                <input ng-model="form.author" type="text" class="form-control" id="fieldAuthor" placeholder="Your Name">
+              </div>
+              <div class="form-group">
+                <label for="fieldMessage">Message</label>
+                <textarea ng-model="form.message" class="form-control" id="fieldMessage" placeholder="Your Message" rows="5"></textarea>
+                <!-- <input type="text" class="form-control" id="fieldMessage" placeholder="Your Message"> -->
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+
+        </div>
       </div>
     </div>
   </body>
