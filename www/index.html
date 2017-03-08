@@ -30,9 +30,8 @@
 
           console.log(JSON.stringify(entry));
 
-          $http.post('/entry',
-            JSON.stringify(entry),
-            function(response) {
+          $http.post('/entry', JSON.stringify(entry))
+            .then(function(response) {
               loadData();
             },
             function(failure) {
