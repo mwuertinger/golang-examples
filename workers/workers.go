@@ -26,7 +26,8 @@ func main() {
 			totalProgress += s
 			p2 += s
 		case <-tick:
-			fmt.Printf("\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rProgress: %v (%v, %v)", totalProgress, p1, p2)
+			fmt.Print("\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r")
+			fmt.Printf("Progress: %v (%v, %v)", totalProgress, p1, p2)
 		}
 	}
 }
