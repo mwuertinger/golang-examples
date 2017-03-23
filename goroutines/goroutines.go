@@ -6,12 +6,12 @@ import (
 )
 
 func main() {
-	count("foo")
-	count("bar")
+	// count("foo")
+	// count("bar")
 
-	// go count("foo")
-	// go count("bar")
-	// time.Sleep(6 * time.Second)
+	go count("foo")
+	go count("bar")
+	time.Sleep(6 * time.Second)
 }
 
 func count(name string) {
